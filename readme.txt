@@ -4,7 +4,8 @@ Using phone(s) as a sonar to image a room or object in x dimensions (like Batman
 
 Notes - long term plan:
 1) Chirp frequency generation
-2) Cross-correlation of signal
+2) Receive the signal
+2) Cross-correlation
 3) Plot data
 4) Profit
 
