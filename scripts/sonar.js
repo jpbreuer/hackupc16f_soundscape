@@ -21,16 +21,46 @@ function doSonar(button) {
                 // create WAV download link using audio data blob
                 
                 recorder.getBuffer(function(data) {
+                    
                   for (var i = 0 ; i < data[0].length ; i++)
                   {
                     rawData[i] = data[0][i];
                   }
 
+                  var maxdelay = rawData.length;
+
+                    var xcorr = [];
+                    /* Calculate the correlation series */
+                    for (delay = -maxdelay + 1; delay < maxdelay; delay++) {
+                        sxy = 0;
+                        for (i = 0, n = maxdelay; i < n; i++) {
+                            j = i + delay;
+                            if (j < 0 || j >= n)
+                                continue;
+                            else
+                                sxy += chirpY[i] * rawData[j];
+                        }
+                        xcorr.push(sxy);
+                    }
+
+                    var cp = {
+                    x: Array.apply(null, Array(chirpY.length)).map(function (_, i) {return (i-1);}),
+                    y: chirpY, 
+                    type: 'scatter'
+                   };
+
                    var rec = {
-                    x: Array.apply(null, Array(rawData.length)).map(function (_, i) {return (i-1) / 44100;}),
+                    x: Array.apply(null, Array(rawData.length)).map(function (_, i) {return (i-1);}),
                     y: rawData, 
                     type: 'scatter'
                    };
+
+                  var xc = {
+                    x: Array.apply(null, Array(xcorr.length)).map(function (_, i) {return (i-1);}),
+                    y: xcorr, 
+                    type: 'scatter'
+                   };
+
                     Plotly.newPlot('myDiv', [rec]);
                 });
 
