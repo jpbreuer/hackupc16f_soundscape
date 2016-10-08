@@ -1,0 +1,32 @@
+body {
+    background-color: #8BC34A; /* green */
+    font-family: "Press Start 2P";
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.strech {
+  flex-grow: 1;
+  text-align: center;
+  transform-style: preserve-3d;
+  perspective: 200px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.fa {
+  font-size: 8em;
+  margin: 15px;
+  transform-origin: bottom center;
+}
+
+.value {
+  margin-bottom: 30px;
+}

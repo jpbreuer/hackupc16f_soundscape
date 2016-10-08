@@ -1,24 +1,31 @@
-<div class="main">
-    <h2>Device Orientation</h2>
-    <table>
-        <tr>
-            <td>Event Supported</td>
-            <td id="doEvent"></td>
-        </tr>
-        <tr>
-            <td>Tilt Left/Right [gamma]</td>
-            <td id="doTiltLR"></td>
-        </tr>
-        <tr>
-            <td>Tilt Front/Back [beta]</td>
-            <td id="doTiltFB"></td>
-        </tr>
-        <tr>
-            <td>Direction [alpha]</td>
-            <td id="doDirection"></td>
-        </tr>
-    </table>
+<!DOCTYPE html>
 
-    <script src="./scripts/orientation.js"></script> Event not supported
+<head>
+    <!-- CSS -->
+    <link href="css/orientation.css" type="text/css" rel="stylesheet" media="screen,projection" />
+</head>
 
-</div>
+<div class="col">
+    <div class="row" id="frame">reference frame coordinates</div>
+    <div class="row">
+        <div class="col strech">
+            <i id="x-icon" class="fa fa-mobile"></i>
+            <div class="value">X: <span id="x">N/A</span></div>
+        </div>
+        <div class="col strech">
+            <i id="y-icon" class="fa fa-mobile"></i>
+            <div class="value">Y: <span id="y">N/A</span></div>
+        </div>
+        <div class="col strech">
+            <i id="z-icon" class="fa fa-mobile"></i>
+            <div class="value">Z: <span id="z">N/A</span></div>
+        </div>
+    </div>
+    <div class="row">
+        <ul>
+            notice how X and Y axes are affected when:
+            <li>in portrait versus landscape modes</li>
+            <li>values near right angles</li>
+        </ul>
+    </div>
+    </div>

@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <style type='text/css'>
+        ul {
+            list-style: none;
+        }
+        
+        #recordingslist audio {
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        #center {
+            position: absolute;
+            left: 40%;
+        }
+        
+        section {
+            width: 80%;
+            height: 200px;
+            margin: auto;
+            padding: 10px;
+        }
+        
+        div#one {
+            height: 200px;
+            margin-top: 15%;
+            margin-left: 20%;
+            float: left;
+        }
+        
+        div#two {
+            margin-top: 4%;
+            margin-left: 45%;
+            height: 200px;
+        }
+    </style>
+</head>
+
+
+<html>
+
+<body>
+
+    <div id="center">
+        <h1>Tweet tweet</h1>
+    </div>
+
+    <section>
+        <div id="one">
+            <form action="action_page.php">
+              Base Frequency:<br>
+              <input type="number" id="fc" value="20000"><br>
+              Bandwidth:<br>
+              <input type="number" id="bw" value="2000"><br>
+              Chirp Length:<br>
+              <input type="number" id="chirpLength" value="0.01"><br>
+              Recording Time:<br>
+              <input type="number" id="recTime" value="0.5"><br>
+            </form>
+
+            <button onclick="doSonar(this);" id="start">Chirp!</button>
+
+            <h2>Recordings</h2>
+            <ul id="recordingslist"></ul>
+
+            <h2>Device Orientation</h2>
+            <ul id="DevOri"></ul>
+            <table>
+                <tr>
+                    <td>Event Supported</td>
+                    <td id="doEvent"></td>
+                </tr>
+                <tr>
+                    <td>Tilt Left/Right [gamma]</td>
+                    <td id="doTiltLR"></td>
+                </tr>
+                <tr>
+                    <td>Tilt Front/Back [beta]</td>
+                    <td id="doTiltFB"></td>
+                </tr>
+                <tr>
+                    <td>Direction [alpha]</td>
+                    <td id="doDirection"></td>
+                </tr>
+            </table>
+
+
+
+            <h2>Log</h2>
+            <pre id="log"></pre>
+        </div>
+
+        <div>
+   
+</div>
+
+
+        <div id="two">
+            <div id="myDiv" style="width: 800px; height: 600px;">
+                <!-- Plotly chart will be drawn inside this DIV -->
+            </div>
+        </div>
+    </section>
+
+    <script src="./scripts/chirp.js"></script>
+    <script src="./dist/recorder.js"></script>
+    <script src="./scripts/sonar.js"></script>
+    <script src="./scripts/orientation.js"></script>
+
+</body>
+
+</html>
+
+
