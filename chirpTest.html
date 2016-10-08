@@ -26,10 +26,16 @@
 <body>
 
     <h1>Tweet tweet</h1>
-    <div>
-        <button id="start">Chirp!</button>
-    </div>
-
+    <form action="action_page.php">
+      Base Frequency:<br>
+      <input type="number" id="fc" value="2000"><br>
+      Bandwidth:<br>
+      <input type="number" id="bw" value="2000"><br>
+      Chirp Length:<br>
+      <input type="number" id="chirpLength" value="0.01"><br>
+    </form>
+    
+    <button id="start">Chirp!</button>
     <button onclick="startRecording(this);">record</button>
     <button onclick="stopRecording(this);" disabled>stop</button>
 
