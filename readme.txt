@@ -3,10 +3,10 @@ Soundscape 2.0!
 Using phone(s) as a sonar to image a room or object in x dimensions (like Batman).
 
 Notes - long term plan:
-1) Chirp frequency generation
+1) Chirp frequency generation - Check!
 2) Receive the signal
 2) Cross-correlation
-3) Plot data
+3) Plot data - Well under way
 4) Profit
 
 Requirements:
