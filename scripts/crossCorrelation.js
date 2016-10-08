@@ -1,9 +1,10 @@
+
 var dataSize = 30;
 
-//var countArray = []; 
-//for ( var i= 0,t = dataSize; i<t;i++){
-//		countArray.push(i+1); 
-//}
+var countArray = [];
+for (var i = 0, t = dataSize; i < t; i++) {
+    countArray.push(i + 1);
+}
 
 var sendSignal = [];
 for (var i = 0, t = dataSize; i < t; i++) {
@@ -44,23 +45,18 @@ document.write("Denominator: ", denom, "<br>");
 var maxdelay = 30;
 var r = [];
 /* Calculate the correlation series */
-for (delay = -maxdelay; delay < maxdelay; delay++) {
+for (delay = -maxdelay + 1; delay < maxdelay; delay++) {
     sxy = 0;
     for (i = 0, n = dataSize; i < n; i++) {
         j = i + delay;
         if (j < 0 || j >= n)
-            sxy += (sendSignal[i] - mx) * (-my);
+            continue;
         else
-            sxy += (sendSignal[i] - mx) * (recSignal[j] - my);
-
-
-        //					while (j < 0)
-        //            j += n;
-        //         j %= n;
-        //         sxy += (sendSignal[i] - mx) * (recSignal[j] - my);
+            sxy += sendSignal[i] * recSignal[j];
     }
     r.push(sxy);
 }
 corPoint = Math.max.apply(Math, r)
-document.write("Delay Array; ", r, "<br>", "Correlation Point: ", corPoint, "<br>");
+var Index = r.indexOf(Math.max.apply(Math, r));
+document.write("Delay Array; ", r, "<br>", "Length of array: ", r.length, " Correlation Point: ", corPoint, " Index of Correltion Point: ", Index, "<br>");
 
