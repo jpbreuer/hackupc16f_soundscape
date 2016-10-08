@@ -9,6 +9,7 @@ function doSonar(button) {
             sendChirp();
 
             //Stop recording
+            var rawData = [];
             setTimeout(function(){
                 mod = modGain = osc = null;
         
@@ -18,10 +19,26 @@ function doSonar(button) {
                 __log('Stopped recording.');
 
                 // create WAV download link using audio data blob
-                createDownloadLink();
+                
+                recorder.getBuffer(function(data) {
+                  for (var i = 0 ; i < data[0].length ; i++)
+                  {
+                    rawData[i] = data[0][i];
+                  }
+
+                   var rec = {
+                    x: Array.apply(null, Array(rawData.length)).map(function (_, i) {return (i-1) / 44100;}),
+                    y: rawData, 
+                    type: 'scatter'
+                   };
+                    Plotly.newPlot('myDiv', [rec]);
+                });
+
 
                 recorder.clear();
             }, 1000 * document.getElementById("recTime").value);
+
+
         }
 
         function __log(e, data) {
