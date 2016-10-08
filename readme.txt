@@ -15,6 +15,13 @@ Requirements:
 3) Image processing..
 
 
+Ricard: 
+1) Not succeded to make a cross correlation that works. The numbers doesnt fit with the matlab inbuilt function 
+
+
+
+
+
 
 
 Original Idea //--------------------------------------------------------------------
