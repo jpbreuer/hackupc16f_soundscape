@@ -2,54 +2,48 @@ var context = new (window.AudioContext || window.webkitAudioContext)();
 var mod, modGain, osc;
 var out = context.destination;
 
-var chirpX = [];
-var chirpY = [];
+var chirpWaveform = [];
+var source;
 
-var drawChirp = function(){
-    var fs = 44100;
-    var N = document.getElementById("chirpLength").value * fs;
+var doChirp = function(){
+    var channels = 1;
+    var frameCount = context.sampleRate * document.getElementById("chirpLength").value;
+    var arrayBuffer = context.createBuffer(channels, frameCount, context.sampleRate);
 
-    chirpX = Array.apply(null, Array(N)).map(function (_, i) {return (i-1) / fs;});
-
-    for (var i = 0; i < N; i++) {
-        chirpY[i] = Math.cos(2*Math.PI*document.getElementById("fc").value*chirpX[i] + 2 * Math.PI * document.getElementById("bw").value / document.getElementById("chirpLength").value * (0.5 * chirpX[i] * chirpX[i] - document.getElementById("chirpLength").value / 2 * chirpX[i]));;
+    for (var channel = 0; channel < channels; channel++) {
+        var nowBuffering = arrayBuffer.getChannelData(channel);
+        var t = 0;
+        for (var i = 0; i < frameCount; i++) {
+            nowBuffering[i] = chirpWaveform[i];
+        }
     }
 
+    var source = context.createBufferSource();
+    source.buffer = arrayBuffer;
+    source.connect(context.destination);
+  
+    source.start();
+};
+
+var drawChirp = function(){
+    var frameCount = context.sampleRate * document.getElementById("chirpLength").value;
+    for (var i = 0; i < frameCount; i++) {
+        t = i / context.sampleRate;
+        chirpWaveform[i] = Math.cos(2*Math.PI*document.getElementById("fc").value*t + 2 * Math.PI * document.getElementById("bw").value / document.getElementById("chirpLength").value * (0.5 * t * t - document.getElementById("chirpLength").value / 2 * t));
+    }   
+
     var chirp = {
-      x: chirpX, 
-      y: chirpY, 
+      x: Array.apply(null, Array(chirpWaveform.length)).map(function (_, i) {return (i-1);}), 
+      y: chirpWaveform, 
       type: 'scatter'
     };
 
     Plotly.newPlot('myDiv', [chirp]);
 };
 
+
 var sendChirp = function(){
-
-    mod = context.createOscillator();
-    mod.type = 'sawtooth';
-    mod.frequency.value = .5 * 1/document.getElementById("chirpLength").value;
-    
-    modGain = context.createGain();
-    modGain.gain.value = document.getElementById("bw").value;
-    
-    osc = context.createOscillator();
-    osc.frequency.value = document.getElementById("fc").value;
-    
-    mod.connect(modGain);
-    modGain.connect(osc.frequency);
-    osc.connect(out);
-
-    osc.start();
-    mod.start();
-    
-    var stopTime = context.currentTime + 0.5 / mod.frequency.value ;
-    osc.stop(stopTime);
-    mod.stop(stopTime);
-
-    setTimeout(function(){
-            mod = modGain = osc = null;
-    }, 500 / mod.frequency.value);
+    doChirp();
 
     drawChirp();
 };

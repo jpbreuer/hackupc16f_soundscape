@@ -1,74 +1,85 @@
 function doSonar(button) {
+
+            sendChirp();
             //Start recording
             recorder && recorder.record();
+
             button.disabled = true;
             button.nextElementSibling.disabled = false;
             __log('Recording...');
-
             //Send Chirp
-            sendChirp();
+            
 
             //Stop recording
             var rawData = [];
             setTimeout(function(){
                 mod = modGain = osc = null;
-        
+
                 recorder && recorder.stop();
                 button.disabled = false;
                 button.previousElementSibling.disabled = false;
                 __log('Stopped recording.');
 
+
                 // create WAV download link using audio data blob
                 
                 recorder.getBuffer(function(data) {
+                    for (var i = 0 ; i < data[0].length ; i++)
+                    {
+                        rawData[i] = data[0][i];
+                    }
                     
-                  for (var i = 0 ; i < data[0].length ; i++)
-                  {
-                    rawData[i] = data[0][i];
-                  }
-
-                  var maxdelay = rawData.length;
+                    var maxdelay = chirpWaveform.length;
 
                     var xcorr = [];
-                    /* Calculate the correlation series */
-                    for (delay = -maxdelay + 1; delay < maxdelay; delay++) {
+
+                    
+                        
+                    for (i = 0, n = rawData.length; i < n; i++) {
                         sxy = 0;
-                        for (i = 0, n = maxdelay; i < n; i++) {
-                            j = i + delay;
+                        for (delay = 0; delay < chirpWaveform.length; delay++) {
+                            j = i - delay;
                             if (j < 0 || j >= n)
                                 continue;
                             else
-                                sxy += chirpY[i] * rawData[j];
+                                sxy += chirpWaveform[delay] * rawData[j];
                         }
-                        xcorr.push(sxy);
+                        
+                        xcorr.push(Math.log10(Math.abs(sxy)));
                     }
+                        
+                    
 
                     var cp = {
-                    x: Array.apply(null, Array(chirpY.length)).map(function (_, i) {return (i-1);}),
-                    y: chirpY, 
-                    type: 'scatter'
-                   };
+                        x: Array.apply(null, Array(chirpWaveform.length)).map(function (_, i) {return (i-1);}),
+                        y: chirpWaveform, 
+                        type: 'scatter'
+                    };
 
-                   var rec = {
-                    x: Array.apply(null, Array(rawData.length)).map(function (_, i) {return (i-1);}),
-                    y: rawData, 
-                    type: 'scatter'
-                   };
+                    var rec = {
+                        x: Array.apply(null, Array(rawData.length)).map(function (_, i) {return (i-1);}),
+                        y: rawData, 
+                        type: 'scatter'
+                    };
 
-                  var xc = {
-                    x: Array.apply(null, Array(xcorr.length)).map(function (_, i) {return (i-1);}),
-                    y: xcorr, 
-                    type: 'scatter'
-                   };
+                    
+                    var xc = {
+                        x: Array.apply(null, Array(xcorr.length)).map(function (_, i) {return (i-1);}),
+                        y: xcorr, 
+                        type: 'scatter'
+                    };
 
-                    Plotly.newPlot('myDiv', [rec]);
+                    Plotly.newPlot('myDiv', [cp, xc, rec]); 
                 });
 
 
                 recorder.clear();
+
+
+                //createDownloadLink();
+
+
             }, 1000 * document.getElementById("recTime").value);
-
-
         }
 
         function __log(e, data) {
@@ -105,6 +116,37 @@ function doSonar(button) {
                 li.appendChild(au);
                 li.appendChild(hf);
                 recordingslist.appendChild(li);
+
+/*
+                var source = context.createBufferSource();
+                var request = new XMLHttpRequest();
+                
+                request.open('GET', url, true);
+                request.responseType = 'arraybuffer';
+
+                request.onload = function() {
+                    var audioData = request.response;
+
+                        context.decodeAudioData(audioData, function(buffer) {
+                        
+                        var channel = buffer.getChannelData(0);
+
+                           for (var i = 0; i < channel; i++) {
+                               console.log(channel[i]);//canvas.getContext('2d').fillRect(i, 1, 40 - channel[i], 40);
+                           }
+                        console.log(buffer)
+                        source.buffer = buffer;
+
+                        source.connect(context.destination);
+                        source.loop = true;
+                    },
+
+                    function(e){"Error with decoding audio data" + e.err});
+
+                }
+
+                request.send();
+                */
             });
         }
 
