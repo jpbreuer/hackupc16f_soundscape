@@ -87,8 +87,6 @@
 
             <h1>Device Orientation API</h1>
             <span id="do-unsupported" class="hidden">deviceorientation event not supported</span>
-            <!--<span id="dm-unsupported" class="hidden">devicemotion event not supported</span>-->
-
             <div id="do-results">
                 <div id="do-info" class="hidden">
                     <p>
@@ -127,12 +125,6 @@
                document.getElementById('alpha').innerHTML = Math.round(event.alpha);
             });
          }
-
-         //if (!window.DeviceMotionEvent) {
-         //   document.getElementById('dm-unsupported').classList.remove('hidden');
-         //} else {
-         //   document.getElementById('dm-info').classList.remove('hidden');
-         //}
     </script>
 </body>
 
