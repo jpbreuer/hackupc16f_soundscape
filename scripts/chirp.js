@@ -22,7 +22,7 @@ var drawChirp = function(){
     Plotly.newPlot('myDiv', [chirp]);
 };
 
-var startTest = function(){
+var sendChirp = function(){
 
     mod = context.createOscillator();
     mod.type = 'sawtooth';
@@ -48,11 +48,8 @@ var startTest = function(){
     setTimeout(function(){
             mod = modGain = osc = null;
     }, 500 / mod.frequency.value);
-};
 
-document.getElementById("start").onclick = function(){
-  startTest();
-  drawChirp();
+    drawChirp();
 };
 
 drawChirp();
