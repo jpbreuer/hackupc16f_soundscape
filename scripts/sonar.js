@@ -4,7 +4,7 @@ document.getElementById('startButton').disabled = false;
 document.getElementById('stopButton').disabled = true;
 
 var xcLayout = {
-  xaxis: {title: 'Distance [m]', range: [-.5, 6]},
+  xaxis: {title: 'Distance [m]', range: [-.5, 10]},
   yaxis: {title: 'Reflection Coefficient', range: [0, 100]},
   title: 'Sonar Reflection',
   hovermode: 'closest'
@@ -41,6 +41,7 @@ var circleChart = circularHeatChart()
 .segmentHeight(2)
 .innerRadius(0)
 .numSegments(16)
+.range(["white", "black"]);
 
 d3.select('#circleChart')
 .selectAll('svg')
@@ -147,13 +148,13 @@ function doSonar() {
                 var dist = (i - index) / context.sampleRate * 340.29 / 2 + 1;
                 xcorr[i] = xcorr[i] * dist * dist;
 
-                var idr = Math.round(dist*100/6);
+                var idr = Math.round(dist*100/10);
                 if (idr < 100)
                     circleData[angleIndex + idr * 16] += xcorr[i];
             }
 
 
-            var color = d3.scale.linear().domain([0.0, max = Math.max.apply(null, circleData)]).range(["white", "red"]);
+            var color = d3.scale.linear().domain([0.0, max = Math.max.apply(null, circleData)]).range(["white", "black"]);
             d3.select('#circleChart').selectAll('path').data(circleData).attr('fill', color);
 
             if (document.getElementById('debugCheck').checked){
