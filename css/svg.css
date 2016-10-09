@@ -1,14 +1,8 @@
-/* SVG styling */
-svg {
-	width: 960px;
-	height: 300px;
+#circleChart svg {
+	width: 600px;
+	height: 600px;
 }
-#energychart svg, #chart3 svg {
-	height: 360px;
-}
-#chart4 svg {
-	height: 470px;
-}
+
 path {
 	stroke: #777;
 	stroke-width: 0.1px;
@@ -21,8 +15,4 @@ path {
 }
 .labels.segment {
 	font-size: 10px;
-}
-
-#chart3 .labels {
-	fill: #555;
 }

@@ -25,7 +25,7 @@ var cumLayout = {
 };
 
 var circleData = [];
-for (var i = 0 ; i < 800 ; i++)
+for (var i = 0 ; i < 1600 ; i++)
     circleData[i] = 0;
 
 var sonarData = [];
@@ -33,7 +33,44 @@ for (var i = 0 ; i < 5000; i++)
     sonarData[i] = 0;
 
 Plotly.newPlot('myDiv2', [{x:0, y:0,type: 'scatter'}], genLayout); 
-Plotly.newPlot('myDiv', [{x:0, y:0,type: 'scatter'}], xcLayout);  
+Plotly.newPlot('myDiv', [{x:0, y:0,type: 'scatter'}], xcLayout); 
+
+var circleChart = circularHeatChart()
+.segmentHeight(2)
+.innerRadius(0)
+.numSegments(16)
+
+d3.select('#circleChart')
+.selectAll('svg')
+.data([circleData])
+.enter()
+.append('svg')
+.call(circleChart); 
+
+var div = document.getElementById('circleChart');
+var deg = -11.25;
+div.style.webkitTransform = 'rotate('+deg+'deg)'; 
+div.style.mozTransform    = 'rotate('+deg+'deg)'; 
+div.style.msTransform     = 'rotate('+deg+'deg)'; 
+div.style.oTransform      = 'rotate('+deg+'deg)'; 
+div.style.transform       = 'rotate('+deg+'deg)'; 
+
+if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', function(event) {
+        //document.getElementById('beta').innerHTML = Math.round(event.beta);
+        //document.getElementById('gamma').innerHTML = Math.round(event.gamma);
+        //document.getElementById('alpha').innerHTML = Math.round(event.alpha);
+
+        angle = event.beta;
+    });
+}
+
+if (window.DeviceMotionEvent) {
+    window.addEventListener('devicemotion', function(event) {
+        //document.getElementById('interval').innerHTML = event.interval;
+    });
+}
+
 
 function startSonar(){
     document.getElementById('startButton').disabled = true;
@@ -44,7 +81,7 @@ function startSonar(){
     updateChirp();
     functionID = setInterval(function() {
         doSonar();
-    }, 2000);
+    }, 1000 * document.getElementById("delayTime").value);
 }
 
 function stopSonar(){
@@ -54,7 +91,7 @@ function stopSonar(){
     window.clearInterval(functionID);
 }
 
-
+var angle = 0;
 function doSonar() {
     sendChirp();        
     //Start recording
@@ -101,11 +138,11 @@ function doSonar() {
                 }
             }
 
-            var angle = 0;
-            var angleIndex = Math.round(angle / 360 * 8);
+            var angleIndex = Math.round(angle / 360 * 16);
+            console.log(angleIndex);
 
-            for (var i = 0 ; i < 800 ; i++){
-                circleData[i] *= 0.9;
+            for (var i = 0 ; i < 1600 ; i++){
+                circleData[i] *= 0.75;
             }
 
             for (var i = index ; i < index+5000 ; i++){
@@ -113,24 +150,14 @@ function doSonar() {
                 xcorr[i] = xcorr[i] * dist * dist;
                 sonarData[i-index] += xcorr[i];
 
-                var idr = Math.round(dist*10);
+                var idr = Math.round(dist*100/6);
                 if (idr < 100)
-                    circleData[angleIndex + idr * 8] += xcorr[i];
+                    circleData[angleIndex + idr * 16] += xcorr[i];
             }
 
-            var chart = circularHeatChart()
-            .segmentHeight(2)
-            .innerRadius(0)
-            .numSegments(8)
-            .segmentLabels(["N", "NE", "E", "SE", "S", "SW", "W", "NW"])
 
-            d3.select('#circleChart')
-            .selectAll('svg')
-            .data([circleData])
-            .enter()
-            .append('svg')
-            .call(chart);
-
+            var color = d3.scale.linear().domain([0.0, max = Math.max.apply(null, circleData)]).range(["white", "red"]);
+            d3.select('#circleChart').selectAll('path').data(circleData).attr('fill', color);
 
 
             var cp = {
@@ -160,7 +187,7 @@ function doSonar() {
                 type: 'scatter'
             };
 
-          Plotly.newPlot('myDiv2', [sd], cumLayout); 
+          Plotly.newPlot('myDiv2', [cp, rec], genLayout); 
           Plotly.newPlot('myDiv', [xc], xcLayout); 
       });
 
@@ -168,9 +195,6 @@ function doSonar() {
 
     }, 1000 * document.getElementById("recTime").value);
 }
-
-
-
 
 function __log(e, data) {
     log.innerHTML += "\n" + e + " " + (data || '');

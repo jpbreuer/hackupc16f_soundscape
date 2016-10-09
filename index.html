@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="css/style2.css">    
     <link rel="stylesheet" href="css/svg.css">
     <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
-
-
-
     <style type='text/css' src="css/style.css">
 
         
@@ -40,6 +37,8 @@
               <input type="number" id="chirpLength" value="0.01"><br>
               Recording Time:<br>
               <input type="number" id="recTime" value="1"><br>
+              Delay:<br>
+              <input type="number" id="delayTime" value="2"><br>
             </form>
 
             <button onclick="startSonar()" id="startButton">Start!</button>
@@ -49,15 +48,15 @@
             <pre id="log"></pre>
         </div>
 
+        <div id="three">
+            <div class="chart" id="circleChart"></div>
+        </div>
+
         <div id="two">
             <div id="myDiv" style="width: 800px; height: 400px;"></div>
             <div id="myDiv2" style="width: 800px; height: 500px;"></div>
         </div>
     </section>
-
-        <div id="three">
-            <div class="chart" id="circleChart"></div>
-        </div>
 
 
     <script src="./scripts/chirp.js"></script>
