@@ -22,18 +22,18 @@ section {
 div#one {
     height: 200px;
     margin-top: 15%;
-    margin-left: 15%;
+    margin-left: 0%;
     float: left;
 }
 
 div#two {
-    margin-top: 4%;
-    margin-left: 45%;
-    height: 200px;
+    margin-top: 50%;
+    margin-left: 0%;
+    height: 400px;
 }
 
 div#three {
-    margin-top: 50%;
-    margin-left: 5%;
-    height: 500px;
+    margin-top: 15%;
+    margin-left: 50%;
+    height: 200px;
 }

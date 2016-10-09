@@ -10,24 +10,21 @@
     <link rel="stylesheet" href="css/style2.css">    
     <link rel="stylesheet" href="css/svg.css">
     <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
-    <style type='text/css' src="css/style.css">
-
-        
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 
 <html>
-
 <body>
 
     <div id="center">
         <h1>Soundscape</h1>
-        <b>Chirp chirp</b>
+        <h2>Chirp chirp!</h2>
     </div>
 
     <section>
         <div id="one">
+            <h3>Settings</h3>
             <form action="action_page.php">
               Base Frequency:<br>
               <input type="number" id="fc" value="20000"><br>
@@ -39,23 +36,31 @@
               <input type="number" id="recTime" value="1"><br>
               Delay:<br>
               <input type="number" id="delayTime" value="2"><br>
+              Debug:
+              <input type="checkbox" id="debugCheck" value="false"><br>
             </form>
 
             <button onclick="startSonar()" id="startButton">Start!</button>
             <button onclick="stopSonar()" id="stopButton">Stop!</button>
-
-            <h2>Log</h2>
-            <pre id="log"></pre>
+        
+            <div>
+                <h2>Log</h2>
+                <pre id="log"></pre>
+            </div>
         </div>
 
+
+        
         <div id="three">
+            <h3>PPI</h3>
             <div class="chart" id="circleChart"></div>
         </div>
 
         <div id="two">
             <div id="myDiv" style="width: 800px; height: 400px;"></div>
-            <div id="myDiv2" style="width: 800px; height: 500px;"></div>
+            <div id="myDiv2" style="width: 800px; height: 400px;"></div>
         </div>
+
     </section>
 
 
@@ -65,5 +70,4 @@
 
 
 </body>
-
 </html>

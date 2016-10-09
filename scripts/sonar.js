@@ -32,8 +32,10 @@ var sonarData = [];
 for (var i = 0 ; i < 5000; i++)
     sonarData[i] = 0;
 
-Plotly.newPlot('myDiv2', [{x:0, y:0,type: 'scatter'}], genLayout); 
-Plotly.newPlot('myDiv', [{x:0, y:0,type: 'scatter'}], xcLayout); 
+if (document.getElementById('debugCheck').checked){
+    Plotly.newPlot('myDiv2', [{x:0, y:0,type: 'scatter'}], genLayout); 
+    Plotly.newPlot('myDiv', [{x:0, y:0,type: 'scatter'}], xcLayout); 
+}
 
 var circleChart = circularHeatChart()
 .segmentHeight(2)
@@ -108,9 +110,7 @@ function doSonar() {
         // create WAV download link using audio data blob
         recorder.getBuffer(function(data) {
             for (var i = 0 ; i < data[0].length ; i++)
-            {
-                rawData[i] = data[0][i];
-            }
+                rawData[i] = Math.sqrt(data[0][i] * data[0][i] + data[1][i] * data[1][i]);
             
             var maxdelay = chirpWaveform.length;
 
@@ -132,14 +132,12 @@ function doSonar() {
             var index = 0;
             for (var i = 0 ; i < xcorr.length ; i++){
                 if (xcorr[i] > 10){
-
                     index = i;
                     break;
                 }
             }
 
             var angleIndex = Math.round(angle / 360 * 16);
-            console.log(angleIndex);
 
             for (var i = 0 ; i < 1600 ; i++){
                 circleData[i] *= 0.75;
@@ -148,7 +146,6 @@ function doSonar() {
             for (var i = index ; i < index+5000 ; i++){
                 var dist = (i - index) / context.sampleRate * 340.29 / 2 + 1;
                 xcorr[i] = xcorr[i] * dist * dist;
-                sonarData[i-index] += xcorr[i];
 
                 var idr = Math.round(dist*100/6);
                 if (idr < 100)
@@ -159,37 +156,32 @@ function doSonar() {
             var color = d3.scale.linear().domain([0.0, max = Math.max.apply(null, circleData)]).range(["white", "red"]);
             d3.select('#circleChart').selectAll('path').data(circleData).attr('fill', color);
 
+            if (document.getElementById('debugCheck').checked){
+                var cp = {
+                    x: Array.apply(null, Array(chirpWaveform.length)).map(function (_, i) {return (i*100);}),
+                    y: chirpWaveform, 
+                    name: 'Chirp',
+                    type: 'scatter'
+                };
 
-            var cp = {
-                x: Array.apply(null, Array(chirpWaveform.length)).map(function (_, i) {return (i*100);}),
-                y: chirpWaveform, 
-                name: 'Chirp',
-                type: 'scatter'
-            };
+                var rec = {
+                    x: Array.apply(null, Array(rawData.length)).map(function (_, i) {return (i);}),
+                    y: rawData, 
+                    name: 'Record',
+                    type: 'scatter'
+                };
 
-            var rec = {
-                x: Array.apply(null, Array(rawData.length)).map(function (_, i) {return (i);}),
-                y: rawData, 
-                name: 'Record',
-                type: 'scatter'
-            };
+                
+                var xc = {
+                    x: Array.apply(null, Array(xcorr.length)).map(function (_, i) {return (i - index) / context.sampleRate * 340.29 / 2;}),
+                    y: xcorr, 
+                    type: 'scatter'
+                };
 
-            
-            var xc = {
-                x: Array.apply(null, Array(xcorr.length)).map(function (_, i) {return (i - index) / context.sampleRate * 340.29 / 2;}),
-                y: xcorr, 
-                type: 'scatter'
-            };
-
-            var sd = {
-                x: Array.apply(null, Array(sonarData.length)).map(function (_, i) {return (i) / context.sampleRate * 340.29 / 2;}),
-                y: sonarData, 
-                type: 'scatter'
-            };
-
-          Plotly.newPlot('myDiv2', [cp, rec], genLayout); 
-          Plotly.newPlot('myDiv', [xc], xcLayout); 
-      });
+                Plotly.newPlot('myDiv2', [cp, rec], genLayout); 
+                Plotly.newPlot('myDiv', [xc], xcLayout); 
+            }
+        });
 
         recorder.clear();
 
@@ -197,7 +189,9 @@ function doSonar() {
 }
 
 function __log(e, data) {
-    log.innerHTML += "\n" + e + " " + (data || '');
+
+    if (document.getElementById('debugCheck').checked)
+        log.innerHTML += "\n" + e + " " + (data || '');
 }
 
 var audio_context;
