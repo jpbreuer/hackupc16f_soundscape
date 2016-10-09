@@ -64,7 +64,7 @@ if (window.DeviceOrientationEvent) {
         //document.getElementById('gamma').innerHTML = Math.round(event.gamma);
         //document.getElementById('alpha').innerHTML = Math.round(event.alpha);
 
-        angle = event.beta;
+        angle = event.alpha;
     });
 }
 
@@ -138,8 +138,8 @@ function doSonar() {
                 }
             }
 
-            var angleIndex = Math.round(angle / 360 * 16);
 
+            var angleIndex = Math.round(angle / 360 * 16);
             for (var i = 0 ; i < 1600 ; i++){
                 circleData[i] *= 0.75;
             }
