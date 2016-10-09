@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="./scripts/circularHeatChart.js"></script>
+
+    <section>
+        <div class="chart" id="chart1"></div>
+    </section>
+    
+<script type="text/javascript">
+var chart = circularHeatChart()
+    .segmentHeight(10)
+    .innerRadius(20);
+
+var data = [];
+for(var i=0; i<240; i++) data[i] = i;
+
+d3.select('#chart1')
+    .selectAll('svg')
+    .data([data])
+    .enter()
+    .append('svg')
+    .call(chart);
+</script>
+
+</body>
+
+</html>
