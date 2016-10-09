@@ -110,7 +110,7 @@ function doSonar() {
         // create WAV download link using audio data blob
         recorder.getBuffer(function(data) {
             for (var i = 0 ; i < data[0].length ; i++)
-                rawData[i] = Math.sqrt(data[0][i] * data[0][i] + data[1][i] * data[1][i]);
+                rawData[i] = data[0][i];
             
             var maxdelay = chirpWaveform.length;
 
