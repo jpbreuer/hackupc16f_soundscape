@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <style type='text/css'>
+        ul {
+            list-style: none;
+        }
+        
+        #recordingslist audio {
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        #center {
+            position: absolute;
+            left: 40%;
+        }
+        
+        section {
+            width: 80%;
+            height: 200px;
+            margin: auto;
+            padding: 10px;
+        }
+        
+        div#one {
+            height: 200px;
+            margin-top: 15%;
+            margin-left: 20%;
+            float: left;
+        }
+        
+        div#two {
+            margin-top: 4%;
+            margin-left: 45%;
+            height: 200px;
+        }
+    </style>
+
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .value {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+
+<html>
+
+<body>
+
+    <div id="center">
+        <h1>Tweet tweet</h1>
+    </div>
+
+    <section>
+        <div id="one">
+            <form action="action_page.php">
+              Base Frequency:<br>
+              <input type="number" id="fc" value="20000"><br>
+              Bandwidth:<br>
+              <input type="number" id="bw" value="2000"><br>
+              Chirp Length:<br>
+              <input type="number" id="chirpLength" value="0.01"><br>
+              Recording Time:<br>
+              <input type="number" id="recTime" value="0.5"><br>
+            </form>
+
+            <button onclick="doSonar(this);" id="start">Chirp!</button>
+
+            <h2>Recordings</h2>
+            <ul id="recordingslist"></ul>
+
+            <h1>Device Orientation API</h1>
+            <span id="do-unsupported" class="hidden">deviceorientation event not supported</span>
+            <div id="do-results">
+                <div id="do-info" class="hidden">
+                    <p>
+                        Coordinates:
+                        (<span id="beta" class="value">null</span>,
+                        <span id="gamma" class="value">null</span>,
+                        <span id="alpha" class="value">null</span>)
+                    </p>
+                </div>
+            </div>
+
+
+            <h2>Log</h2>
+            <pre id="log"></pre>
+        </div>
+
+        <div id="two">
+            <div id="myDiv" style="width: 800px; height: 600px;">
+                <!-- Plotly chart will be drawn inside this DIV -->
+            </div>
+        </div>
+    </section>
+
+    <script src="./scripts/chirp.js"></script>
+    <script src="./dist/recorder.js"></script>
+    <script src="./scripts/sonar.js"></script>
+    <script>
+         if (!window.DeviceOrientationEvent) {
+            document.getElementById('do-unsupported').classList.remove('hidden');
+         } else {
+            document.getElementById('do-info').classList.remove('hidden');
+
+            window.addEventListener('deviceorientation', function(event) {
+               document.getElementById('beta').innerHTML = Math.round(event.beta);
+               document.getElementById('gamma').innerHTML = Math.round(event.gamma);
+               document.getElementById('alpha').innerHTML = Math.round(event.alpha);
+            });
+         }
+    </script>
+</body>
+
+</html>
+
+
