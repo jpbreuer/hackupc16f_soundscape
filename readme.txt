@@ -4,24 +4,19 @@ Using phone(s) as a sonar to image a room or object in x dimensions (like Batman
 
 Notes - long term plan:
 1) Chirp frequency generation - Check!
-2) Receive the signal
-2) Cross-correlation
-3) Plot data - Well under way
-4) Profit
+2) Receive the signal - Check!
+2) Cross-correlation - Check!
+3) Plot data - Check!
+4) Find orientation - Check!
+5) Profit
 
 Requirements:
 1) Set up a local phone database to store data, or a server to handle everything.
+  - Unnecessary throught the wonder of javascript
 2) Error corrections to improve signal to noise ratio
+  - Difficult to do given the time constraints
 3) Image processing..
-
-
-Ricard: 
-1) Not succeded to make a cross correlation that works. The numbers doesnt fit with the matlab inbuilt function 
-
-
-
-
-
+  - See above.
 
 
 Original Idea //--------------------------------------------------------------------
